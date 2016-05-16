@@ -5,13 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 public class Main {
-
-    private static String[] CATEGORY = new String[] { "FJ", "RW", "TY", "QG",
-            "DW", "WH", "CY", "AQ", "ET", "KX", "HD", "DC" };
 
     private static Map<String, String> LABELMAP = new HashMap<String, String>();
 
@@ -125,11 +123,13 @@ public class Main {
         try {
             in = new FileInputStream(configPath);
             pro.load(in);
-            for (String label : CATEGORY) {
-                String value = pro.getProperty(label);
-                if (value != null) {
-                    LABELMAP.put(label, value);
-                }
+
+            Iterator it = pro.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, String> entry = (Map.Entry) it.next();
+                String key = entry.getKey();
+                String value = entry.getValue();
+                LABELMAP.put(key, value);
             }
         } catch (Exception e) {
             e.printStackTrace();
