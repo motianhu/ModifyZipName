@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class Main {
 
@@ -166,16 +167,16 @@ public class Main {
     }
 
     private static String[] needReplace(String fileName) {
-        String[] splits = fileName.split("-");
-        if (splits == null) {
-            return null;
-        }
-        if (splits.length != 4) {
-            return null;
+        Set<String> keys = LABELMAP.keySet();
+        Iterator<String> i = keys.iterator();
+        while (i.hasNext()) {
+            String key = i.next();
+            if (fileName.contains(key)) {
+                return new String[] { key, LABELMAP.get(key) };
+            }
         }
 
-        String category = splits[2];
-        return new String[] { category, LABELMAP.get(category) };
+        return null;
     }
 
     private static File mkdir(String target) {
